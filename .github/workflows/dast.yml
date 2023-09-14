@@ -34,10 +34,10 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - run: docker rm demoApp | true && docker run -d -p 8080:8080 --name demoApp ${{ env.IMAGE_TAG }}         
+      - run: echo "docker rm demoApp | true && docker run -d -p 8080:8080 --name demoApp ${{ env.IMAGE_TAG }}" >> $GITHUB_STEP_SUMMARY         
 
       - name: wait for container to start
-        run: timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:8080)" != "200" ]]; do sleep 5; done' || false
+        run: echo "timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:8080)" != "200" ]]; do sleep 5; done' || false" >> $GITHUB_STEP_SUMMARY
 
       - name: test container
         run: curl -s localhost:8080/echo?msg=Hello%20World!
